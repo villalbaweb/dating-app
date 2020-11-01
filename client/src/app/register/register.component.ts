@@ -1,4 +1,5 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
+import { Subscription } from 'rxjs';
 
 import { AccountService } from '../_services/account.service';
 
@@ -7,18 +8,24 @@ import { AccountService } from '../_services/account.service';
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.css']
 })
-export class RegisterComponent implements OnInit {
+export class RegisterComponent implements OnInit, OnDestroy {
 
   @Output() cancelRegister = new EventEmitter();
   model: any = {};
+
+  accountServiceSubscription: Subscription = new Subscription();
 
   constructor(private _accountService: AccountService) { }
 
   ngOnInit(): void {
   }
 
+  ngOnDestroy(): void {
+    this.accountServiceSubscription.unsubscribe();
+  }
+
   register() {
-    this._accountService.register(this.model)
+    this.accountServiceSubscription = this._accountService.register(this.model)
     .subscribe(response => {
       console.log(response);
       this.cancel();

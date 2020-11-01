@@ -1,8 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { error } from 'protractor';
-import { Observable } from 'rxjs';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
 
-import { User } from '../_models/user';
 import { AccountService } from '../_services/account.service';
 
 @Component({
@@ -10,17 +8,23 @@ import { AccountService } from '../_services/account.service';
   templateUrl: './nav.component.html',
   styleUrls: ['./nav.component.css']
 })
-export class NavComponent implements OnInit {
+export class NavComponent implements OnInit, OnDestroy {
 
   model: any = {}
+
+  accountServiceSubscription: Subscription = new Subscription();
 
   constructor(public accountService: AccountService) { }
 
   ngOnInit(): void {
   }
 
+  ngOnDestroy(): void {
+    this.accountServiceSubscription.unsubscribe();
+  }
+
   login() {
-    this.accountService.login(this.model)
+    this.accountServiceSubscription = this.accountService.login(this.model)
     .subscribe(response => {
       console.log(response);
     },
