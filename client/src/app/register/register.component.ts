@@ -1,4 +1,5 @@
 import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
+import { ToastrService } from 'ngx-toastr';
 import { Subscription } from 'rxjs';
 
 import { AccountService } from '../_services/account.service';
@@ -15,7 +16,9 @@ export class RegisterComponent implements OnInit, OnDestroy {
 
   accountServiceSubscription: Subscription = new Subscription();
 
-  constructor(private _accountService: AccountService) { }
+  constructor(
+    private _accountService: AccountService,
+    private toastr: ToastrService) { }
 
   ngOnInit(): void {
   }
@@ -32,6 +35,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
     },
     error => {
       console.log(error);
+      this.toastr.error(error.error);
     });
   }
 
