@@ -1,4 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 
 import { AccountService } from '../_services/account.service';
@@ -14,7 +15,9 @@ export class NavComponent implements OnInit, OnDestroy {
 
   accountServiceSubscription: Subscription = new Subscription();
 
-  constructor(public accountService: AccountService) { }
+  constructor(
+    public accountService: AccountService,
+    private router: Router) { }
 
   ngOnInit(): void {
   }
@@ -26,7 +29,7 @@ export class NavComponent implements OnInit, OnDestroy {
   login() {
     this.accountServiceSubscription = this.accountService.login(this.model)
     .subscribe(response => {
-      console.log(response);
+      this.router.navigateByUrl('/members');
     },
     error => {
       console.log(error);
@@ -35,6 +38,7 @@ export class NavComponent implements OnInit, OnDestroy {
 
   logout() {
     this.accountService.logout();
+    this.router.navigateByUrl('/');
   }
 
 }
