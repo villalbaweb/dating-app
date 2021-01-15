@@ -20,7 +20,8 @@ export class MemberEditComponent implements OnInit {
     private _accountService: AccountService,
     private _membersService: MembersService) { 
 
-      this._accountService.currentUser$.pipe(take(1))
+      this._accountService.currentUser$
+      .pipe(take(1))
       .subscribe((user: User) => {
         this.user = user;
       });
