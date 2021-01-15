@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ToastrService } from 'ngx-toastr';
 import { take } from 'rxjs/operators';
 
 import { Member } from 'src/app/_models/member';
@@ -18,7 +19,8 @@ export class MemberEditComponent implements OnInit {
 
   constructor(
     private _accountService: AccountService,
-    private _membersService: MembersService) { 
+    private _membersService: MembersService,
+    private _toaster: ToastrService) { 
 
       this._accountService.currentUser$
       .pipe(take(1))
@@ -39,4 +41,8 @@ export class MemberEditComponent implements OnInit {
     });
   }
 
+  updateMember() {
+    console.log(this.member);
+    this._toaster.success('Profile updated succesfully');
+  }
 }
