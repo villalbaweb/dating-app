@@ -25,10 +25,12 @@
         </div>
 
         Multiple
-        <input type="file" ng2FileSelect [uploader]="uploader" multiple  /><br/>
+        <button class="btn btn-success" onclick="document.getElementById('getMultipleFile').click()">Selecciona Archivos</button>
+        <input type="file" ng2FileSelect [uploader]="uploader" multiple id="getMultipleFile" style="display:none" /><br/>
 
         Single
-        <input type="file" ng2FileSelect [uploader]="uploader" />
+        <button class="btn btn-success" onclick="document.getElementById('getFile').click()">Selecciona Archivo</button>
+        <input type="file" ng2FileSelect [uploader]="uploader" id="getFile" style="display:none"/>
     </div>
 
     <div class="col-md-9" style="margin-bottom: 40px" *ngIf="uploader?.queue?.length">
