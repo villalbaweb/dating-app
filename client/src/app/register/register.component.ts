@@ -42,7 +42,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
     return (control: AbstractControl) => {
       return control?.value === control?.parent?.controls[matchTo].value
         ? null                    // if there is a match then return null
-        : { isMatch : false }     // otherwise it does not match
+        : { isMatch : true }     // otherwise it does not match, it has to be true so the propery can beidentified in the remplate
     }
   }
 
