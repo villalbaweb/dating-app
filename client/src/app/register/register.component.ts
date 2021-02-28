@@ -15,6 +15,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
   @Output() cancelRegister = new EventEmitter();
   model: any = {};
   registerForm: FormGroup;
+  maxDate: Date = new Date();
 
   accountServiceSubscription: Subscription = new Subscription();
 
@@ -25,6 +26,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.initializeForm();
+    this.maxDate.setFullYear(this.maxDate.getFullYear() - 18);
   }
 
   initializeForm() {
