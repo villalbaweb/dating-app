@@ -20,6 +20,7 @@ namespace API.Helpers
                 .ReverseMap();
             CreateMap<Photo, PhotoDto>().ReverseMap();
             CreateMap<MemberUpdateDto, AppUser>();
+            CreateMap<RegisterDto, AppUser>();
         }
     }
 }
