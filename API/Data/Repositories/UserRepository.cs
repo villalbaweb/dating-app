@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -58,8 +59,13 @@ namespace API.Data.Repositories
         {
             var query = _context.Users.AsQueryable();
 
+            // DANIEL: This filter should not be in the Controller
             query = query.Where(user => user.UserName != userParams.CurrentUserName);
             query = query.Where(user => user.Gender == userParams.Gender);
+
+            var minDob = DateTime.Today.AddYears(-userParams.MaxAge -1);
+            var maxDob = DateTime.Today.AddYears(-userParams.MinAge);
+            query = query.Where(user => user.DateOfBirth >= minDob && user.DateOfBirth <= maxDob);
 
             var filteredQuery = query
                 .ProjectTo<MemberDto>(_mapper.ConfigurationProvider)
