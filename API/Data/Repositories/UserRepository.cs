@@ -56,11 +56,16 @@ namespace API.Data.Repositories
 
         public async Task<PagedList<MemberDto>> GetMembersAsync(UserParams userParams)
         {
-            var query = _context.Users
+            var query = _context.Users.AsQueryable();
+
+            query = query.Where(user => user.UserName != userParams.CurrentUserName);
+            query = query.Where(user => user.Gender == userParams.Gender);
+
+            var filteredQuery = query
                 .ProjectTo<MemberDto>(_mapper.ConfigurationProvider)
                 .AsNoTracking();
 
-            return await PagedList<MemberDto>.CreateAsync(query, userParams.PageNumber, userParams.PageSize);
+            return await PagedList<MemberDto>.CreateAsync(filteredQuery, userParams.PageNumber, userParams.PageSize);
         }
 
         public async Task<MemberDto> GetMemberAsync(string username)
