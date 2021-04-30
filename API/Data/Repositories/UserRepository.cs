@@ -67,6 +67,12 @@ namespace API.Data.Repositories
             var maxDob = DateTime.Today.AddYears(-userParams.MinAge);
             query = query.Where(user => user.DateOfBirth >= minDob && user.DateOfBirth <= maxDob);
 
+            query = userParams.OrderBy switch
+            {
+                "created" => query.OrderByDescending(user => user.Created),
+                _ => query.OrderByDescending(user => user.LastActive)
+            };
+
             var filteredQuery = query
                 .ProjectTo<MemberDto>(_mapper.ConfigurationProvider)
                 .AsNoTracking();
