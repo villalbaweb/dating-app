@@ -15,14 +15,28 @@ export class MembersService {
 
   baseUrl = environment.apiUrl;
   members: Member[] = [];
+  memberCache = new Map();  // this works just like a Dictionary type in C#
 
   constructor(private _http: HttpClient) {}
 
   getMembers(userParams: UserParams): Observable<PaginatedResult<Member[]>> {
 
+    var memberCacheKey = Object.values(userParams).join('-');
+    var response = this.memberCache.get(memberCacheKey);
+    if(response) {
+      return of(response);
+    }
+
     let params = this.getPaginationHeaders(userParams);
 
-    return this.getPaginatedResults<Member[]>(this.baseUrl + 'users', params);
+    return this.getPaginatedResults<Member[]>(this.baseUrl + 'users', params)
+      .pipe(
+        map(response => {
+          this.memberCache.set(memberCacheKey, response);
+          return response;
+        }
+      )
+    );
   }
 
   getMember(username: string): Observable<Member> {
